@@ -1,7 +1,9 @@
 import hashlib as hasher
 import datetime as date
 
+# Block class
 class Block:
+  # initialize block
   def __init__(self, index, timestamp, data, previous_hash):
     self.index = index
     self.timestamp = timestamp
@@ -9,6 +11,9 @@ class Block:
     self.previous_hash = previous_hash
     self.hash = self.hash_block()
   
+  # method to hash the block
+  # "hashing the block" means converting the block's contents into a fixed-size string of characters,
+  #  a sequence of numbers and letters.
   def hash_block(self):
     sha = hasher.sha256()
     sha.update((str(self.index) + 
@@ -17,12 +22,14 @@ class Block:
                str(self.previous_hash)).encode('utf-8'))
     return sha.hexdigest()
 
-
+# Create the genesis block
+# the genesis block is the first block in a blockchain.
 def create_genesis_block():
   # Manually construct a block with
   # index zero and arbitrary previous hash
   return Block(0, date.datetime.now(), "Genesis Block", "0")
 
+# Create subsequent blocks
 def next_block(last_block):
   index = last_block.index + 1
   timestamp = date.datetime.now()
@@ -30,6 +37,7 @@ def next_block(last_block):
   previous_hash = last_block.hash
   return Block(index, timestamp, data, previous_hash)
 
+# Main program
 if __name__ == '__main__':
   # Create the blockchain and add the genesis block
   blockchain = [create_genesis_block()]
